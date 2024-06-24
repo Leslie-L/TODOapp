@@ -1,0 +1,49 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<template>
+  <div class="p-2 flex bg-[#25273c] border-b-2 border-slate-600">
+    <span v-if="completed" class="w-5 h-5 rounded-full cursor-pointer" @click="handlerCompleted">
+      <svg
+        class="w-6 h-6 text-green-400"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+    </span>
+    <span
+      v-else
+      class="w-5 h-5 rounded-full bg-gray-500 cursor-pointer"
+      @click="handlerCompleted"
+    ></span>
+    <p v-if="completed" class="px-4 text-white line-through">{{ todo }}</p>
+    <p v-else class="px-4 text-white">{{ todo }}</p>
+  </div>
+</template>
+<script setup>
+import { defineProps, toRefs, defineEmits } from 'vue'
+
+const props = defineProps({
+  id: {
+    type: String
+  },
+  todo: {
+    type: String
+  },
+  completed: {
+    type: Boolean
+  }
+})
+const { id, todo, completed } = toRefs(props)
+const emits = defineEmits(['markCompleted'])
+const handlerCompleted = () => {
+  emits('markCompleted', id.value)
+}
+</script>
