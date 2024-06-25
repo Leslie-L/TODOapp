@@ -8,9 +8,12 @@
       <span v-else>{{ count }} items left</span>
     </div>
     <div class="flex gap-2 items-center">
-      <span>All</span>
-      <span>Active</span>
-      <span>Completed</span>
+      <span v-if="option == 'all'" class="text-blue-400 font-bold">All</span>
+      <span v-else>All</span>
+      <span v-if="option == 'active'" class="text-blue-400 font-bold">Active</span>
+      <span v-else>Active</span>
+      <span v-if="option == 'completed'" class="text-blue-400 font-bold">Completed</span>
+      <span v-else>Completed</span>
     </div>
     <div class="text-right">
       <span>Clear Completed</span>
@@ -23,7 +26,10 @@ import { defineProps, toRefs } from 'vue'
 const props = defineProps({
   count: {
     type: Number
+  },
+  option: {
+    type: String
   }
 })
-const { count } = toRefs(props)
+const { count, option } = toRefs(props)
 </script>

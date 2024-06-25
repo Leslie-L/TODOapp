@@ -5,6 +5,7 @@ import Task from '@/components/Task.vue'
 import Menu from '@/components/Menu.vue'
 
 const newTodo = ref('')
+const optionSelected = ref('all')
 const TODOS = ref([
   {
     id: 'xsea213s',
@@ -28,6 +29,9 @@ const markCompleted = (id) => {
   if (index !== -1) {
     TODOS.value[index].completed = !TODOS.value[index].completed
   }
+}
+const changeOption = (option) => {
+  optionSelected.value = option
 }
 const insertTODO = (event) => {
   const key = event.key
@@ -58,7 +62,7 @@ const insertTODO = (event) => {
       </div>
     </div>
     <main class="w-full flex justify-center relative">
-      <section class="max-w-md w-full absolute -top-2">
+      <section class="max-w-md w-full absolute -top-6 p-2">
         <Task
           v-for="item in TODOS"
           :id="item.id"
@@ -67,7 +71,7 @@ const insertTODO = (event) => {
           :key="item.id"
           @markCompleted="markCompleted"
         />
-        <Menu :count="countTODOS" />
+        <Menu :count="countTODOS" :option="optionSelected" @changeOption="changeOption" />
       </section>
     </main>
   </div>
