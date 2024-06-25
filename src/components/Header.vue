@@ -1,11 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="w-full flex justify-between">
-    <span class="font-bold text-2xl py-4">TODO</span>
+    <span class="font-bold text-2xl py-4 text-white">TODO</span>
     <button @click="change">
       <svg
         v-if="darkMode === 'light'"
-        class="w-6 h-6 text-gray-800 dark:text-white"
+        class="w-6 h-6 text-white"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -21,7 +21,7 @@
       </svg>
       <svg
         v-else
-        class="w-6 h-6 text-gray-800 dark:text-white"
+        class="w-6 h-6 text-white"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"

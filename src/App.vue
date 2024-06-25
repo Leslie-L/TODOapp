@@ -73,7 +73,7 @@ const clearTODOS = () => {
 
 <template>
   <div class="w-full h-screen flex flex-col items-center bg-slate-50 dark:bg-black">
-    <div class="w-full h-40 bg-blue-400 grid place-content-center">
+    <div class="w-full h-40 bg-blue-600 grid place-content-center">
       <div class="max-w-md w-full">
         <Header :darkMode="darkMode" @changeDarkMode="changeDarkMode" />
         <input
