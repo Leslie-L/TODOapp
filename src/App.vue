@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Header from '@/components/Header.vue'
 import Task from '@/components/Task.vue'
 import Menu from '@/components/Menu.vue'
@@ -8,9 +8,31 @@ const newTodo = ref('')
 const optionSelected = ref('all')
 const TODOS = ref([])
 const TODOdisplayed = ref([...TODOS.value])
+const darkMode = ref('')
+onMounted(() => {
+  if (
+    localStorage.theme === 'dark' ||
+    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    document.documentElement.classList.add('dark')
+    darkMode.value = 'dark'
+  } else {
+    document.documentElement.classList.remove('dark')
+    darkMode.value = 'light'
+  }
+})
 
-const countTODOS = computed(() => TODOS.value.filter((item) => !item.completed).length)
+const countTODOS = computed(() => TODOdisplayed.value.filter((item) => !item.completed).length)
 
+const changeDarkMode = () => {
+  if (darkMode.value === 'light') {
+    document.documentElement.classList.add('dark')
+    darkMode.value = 'dark'
+  } else {
+    document.documentElement.classList.remove('dark')
+    darkMode.value = 'light'
+  }
+}
 const markCompleted = (id) => {
   const index = TODOS.value.findIndex((item) => item.id === id)
   if (index !== -1) {
@@ -50,12 +72,12 @@ const clearTODOS = () => {
 </script>
 
 <template>
-  <div class="w-full h-screen flex flex-col items-center bg-black">
+  <div class="w-full h-screen flex flex-col items-center bg-slate-50 dark:bg-black">
     <div class="w-full h-40 bg-blue-400 grid place-content-center">
       <div class="max-w-md w-full">
-        <Header />
+        <Header :darkMode="darkMode" @changeDarkMode="changeDarkMode" />
         <input
-          class="max-w-md min-w-full bg-[#25273c] py-2 px-5 rounded-sm text-gray-300"
+          class="max-w-md min-w-full dark:bg-[#25273c] py-2 px-5 rounded-sm dark:text-gray-300"
           type="text"
           placeholder="Create a new TODO..."
           v-on:keydown="insertTODO"

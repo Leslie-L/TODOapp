@@ -1,6 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="p-2 flex bg-[#25273c] border-b-2 border-slate-600">
+  <div
+    class="p-2 flex bg-slate-50 dark:text-white dark:bg-[#25273c] border-b-2 border-slate-200 dark:border-slate-600"
+  >
     <span v-if="completed" class="w-5 h-5 rounded-full cursor-pointer" @click="handlerCompleted">
       <svg
         class="w-6 h-6 text-green-400"
@@ -23,8 +25,8 @@
       class="w-5 h-5 rounded-full bg-gray-500 cursor-pointer"
       @click="handlerCompleted"
     ></span>
-    <p v-if="completed" class="px-4 text-white line-through">{{ todo }}</p>
-    <p v-else class="px-4 text-white">{{ todo }}</p>
+    <p v-if="completed" class="px-4 dark:text-white line-through">{{ todo }}</p>
+    <p v-else class="px-4 dark:text-white">{{ todo }}</p>
   </div>
 </template>
 <script setup>
