@@ -6,24 +6,11 @@ import Menu from '@/components/Menu.vue'
 
 const newTodo = ref('')
 const optionSelected = ref('all')
-const TODOS = ref([
-  {
-    id: 'xsea213s',
-    todo: 'Hacer el almuerzo',
-    completed: true
-  },
-  {
-    id: 'pofgoew2',
-    todo: 'Planchar la ropa',
-    completed: false
-  },
-  {
-    id: 'dfsa2',
-    todo: 'Hacer cosas',
-    completed: false
-  }
-])
+const TODOS = ref([])
+const TODOdisplayed = ref([...TODOS.value])
+
 const countTODOS = computed(() => TODOS.value.filter((item) => !item.completed).length)
+
 const markCompleted = (id) => {
   const index = TODOS.value.findIndex((item) => item.id === id)
   if (index !== -1) {
@@ -32,6 +19,15 @@ const markCompleted = (id) => {
 }
 const changeOption = (option) => {
   optionSelected.value = option
+  if (option === 'all') {
+    TODOdisplayed.value = [...TODOS.value]
+  } else if (option === 'active') {
+    const actives = TODOS.value.filter((item) => !item.completed)
+    TODOdisplayed.value = [...actives]
+  } else {
+    const noactives = TODOS.value.filter((item) => item.completed)
+    TODOdisplayed.value = [...noactives]
+  }
 }
 const insertTODO = (event) => {
   const key = event.key
@@ -43,7 +39,13 @@ const insertTODO = (event) => {
     }
     TODOS.value.push(data)
     newTodo.value = ''
+    changeOption(optionSelected.value)
   }
+}
+const clearTODOS = () => {
+  const clear = TODOS.value.filter((item) => item.completed === false)
+  TODOS.value = [...clear]
+  changeOption(optionSelected.value)
 }
 </script>
 
@@ -64,14 +66,19 @@ const insertTODO = (event) => {
     <main class="w-full flex justify-center relative">
       <section class="max-w-md w-full absolute -top-6 p-2">
         <Task
-          v-for="item in TODOS"
+          v-for="item in TODOdisplayed"
           :id="item.id"
           :todo="item.todo"
           :completed="item.completed"
           :key="item.id"
           @markCompleted="markCompleted"
         />
-        <Menu :count="countTODOS" :option="optionSelected" @changeOption="changeOption" />
+        <Menu
+          :count="countTODOS"
+          :option="optionSelected"
+          @changeOption="changeOption"
+          @clearTODOS="clearTODOS"
+        />
       </section>
     </main>
   </div>
