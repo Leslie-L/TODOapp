@@ -7,9 +7,10 @@ import Menu from '@/components/Menu.vue'
 const newTodo = ref('')
 const optionSelected = ref('all')
 const TODOS = ref([])
-const TODOdisplayed = ref([...TODOS.value])
+const TODOdisplayed = ref([])
 const darkMode = ref('')
 onMounted(() => {
+  //config darkmode
   if (
     localStorage.theme === 'dark' ||
     (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -20,10 +21,19 @@ onMounted(() => {
     document.documentElement.classList.remove('dark')
     darkMode.value = 'light'
   }
+  //reading localstorage
+  const todos = localStorage.getItem('todoApp')
+  if (todos) {
+    const todosArr = JSON.parse(todos)
+    TODOS.value = [...todosArr]
+    TODOdisplayed.value = [...todosArr]
+  }
 })
 
 const countTODOS = computed(() => TODOdisplayed.value.filter((item) => !item.completed).length)
-
+const saveLocalStorege = () => {
+  localStorage.setItem('todoApp', JSON.stringify(TODOS.value))
+}
 const changeDarkMode = () => {
   if (darkMode.value === 'light') {
     document.documentElement.classList.add('dark')
@@ -38,6 +48,7 @@ const markCompleted = (id) => {
   if (index !== -1) {
     TODOS.value[index].completed = !TODOS.value[index].completed
   }
+  saveLocalStorege()
 }
 const changeOption = (option) => {
   optionSelected.value = option
@@ -62,12 +73,14 @@ const insertTODO = (event) => {
     TODOS.value.push(data)
     newTodo.value = ''
     changeOption(optionSelected.value)
+    saveLocalStorege()
   }
 }
 const clearTODOS = () => {
   const clear = TODOS.value.filter((item) => item.completed === false)
   TODOS.value = [...clear]
   changeOption(optionSelected.value)
+  saveLocalStorege()
 }
 </script>
 
